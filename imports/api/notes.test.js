@@ -68,7 +68,6 @@ if (Meteor.isServer) {
         title,
         body: noteOne.body
       });
-
     });
 
     it('should throw error if extra updates', function() {
@@ -81,6 +80,20 @@ if (Meteor.isServer) {
           { unexpectedData },
         ]);
       }).toThrow();
+    });
+
+    it('should not update not if user was not creator', function() {
+      const title = 'This is an updated title.'
+      Meteor.server.method_handlers['notes.update'].apply({ 
+        userId: 'testid'
+      }, [
+        noteOne._id,
+        { title }
+      ]);
+
+      const note = Notes.findOne(noteOne._id);
+
+      expect(note).toInclude(noteOne);
     });
 
   });
