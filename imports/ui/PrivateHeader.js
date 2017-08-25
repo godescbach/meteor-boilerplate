@@ -1,8 +1,9 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import { createContainer } from 'meteor/react-meteor-data';
 
-const PrivateHeader = (props) => {
+export const PrivateHeader = (props) => {
     return (
         <div className="header">
           <div className="header__content">
@@ -18,4 +19,10 @@ PrivateHeader.propTypes = {
   handleLogout: React.PropTypes.func.isRequired
 };
 
-export default PrivateHeader;
+export default createContainer(() => {
+  return {
+    handleLogout: () => Accounts.logout()
+  };
+}, PrivateHeader);
+
+// export default PrivateHeader;
